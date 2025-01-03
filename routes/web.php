@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GigController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
@@ -13,4 +14,9 @@ Route::view('/', 'welcome')->name('home');
 Route::prefix('seller')->group(function () {
     Route::view('/dashboard', 'seller.pages.dashboard')->name('seller-dashboard');
     Route::view('/gigs', 'seller.pages.gigs')->name('seller-gigs');
+    Route::view('/create-gigs', 'seller.pages.create-gig')->name('seller-add-gigs');
+
+
+    // get routes
+    Route::get('/create-gigs', [GigController::class, 'getCategories']);
 });
