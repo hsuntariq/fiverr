@@ -19,4 +19,11 @@ Route::prefix('seller')->group(function () {
 
     // get routes
     Route::get('/create-gigs', [GigController::class, 'getCategories']);
+
+
+
+    // post routes
+
+    Route::post('/get-relevant-values', [GigController::class, 'getRelevantValues']);
+    Route::post('/add-gig', [GigController::class, 'addGig']);
 });

@@ -36,7 +36,8 @@
 
 
         <div class="container mt-5">
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="/seller/add-gig" method="POST" enctype="multipart/form-data">
+                @csrf
                 <div class="row">
                     <div class="col-lg-6">
                         <!-- Overview Section -->
@@ -44,21 +45,23 @@
                             <h2>Overview</h2>
                             <div class="mb-3">
                                 <label for="gigTitle" class="form-label">Gig Title</label>
-                                <input type="text" class="form-control" id="gigTitle"
+                                <input name='title' type="text" class="form-control" id="gigTitle"
                                     placeholder="I will do marketing design for your business">
                             </div>
 
                             <div class="mb-3">
                                 <label for="category" class="form-label">Category</label>
-                                <select class="form-select" id="category">
+                                <select name='category' class="form-select" id="category">
                                     @foreach ($categories as $item)
-                                        <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mb-3 ">
                                 <label class="form-label">Platform Type</label>
+                                <div class="types"></div>
+                                <x-loader />
                                 {{-- <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="facebook">
                                     <label class="form-check-label" for="facebook">Facebook</label>
@@ -80,12 +83,14 @@
                             <h2>Description & FAQ</h2>
                             <div class="mb-3">
                                 <label for="description" class="form-label">Description</label>
-                                <textarea class="form-control" id="description" rows="4" placeholder="Write a detailed description of your gig"></textarea>
+                                <textarea name='desc' class="form-control" id="description" rows="4"
+                                    placeholder="Write a detailed description of your gig"></textarea>
                             </div>
 
                             <div class="mb-3">
                                 <label for="faq" class="form-label">FAQ</label>
-                                <textarea class="form-control" id="faq" rows="4" placeholder="Add frequently asked questions"></textarea>
+                                <textarea name='faq' class="form-control" id="faq" rows="4"
+                                    placeholder="Add frequently asked questions"></textarea>
                             </div>
                         </div>
                     </div>
@@ -95,19 +100,19 @@
                             <h2>Pricing</h2>
                             <div class="mb-3">
                                 <label for="basicPrice" class="form-label">Basic Package</label>
-                                <input type="text" class="form-control" id="basicPrice"
+                                <input name='base_package' type="text" class="form-control" id="basicPrice"
                                     placeholder="Enter basic package price">
                             </div>
 
                             <div class="mb-3">
                                 <label for="standardPrice" class="form-label">Standard Package</label>
-                                <input type="text" class="form-control" id="standardPrice"
+                                <input name='standard_package' type="text" class="form-control" id="standardPrice"
                                     placeholder="Enter standard package price">
                             </div>
 
                             <div class="mb-3">
                                 <label for="premiumPrice" class="form-label">Premium Package</label>
-                                <input type="text" class="form-control" id="premiumPrice"
+                                <input name='premium_package' type="text" class="form-control" id="premiumPrice"
                                     placeholder="Enter premium package price">
                             </div>
 
@@ -118,7 +123,7 @@
 
                             <div class="mb-3">
                                 <label for="galleryUpload" class="form-label">Upload Images</label>
-                                <input class="form-control" type="file" id="galleryUpload" multiple>
+                                <input name='images' class="form-control" type="file" id="galleryUpload" multiple>
                             </div>
 
                         </div>
@@ -127,7 +132,7 @@
 
                             <div class="mb-3">
                                 <label for="galleryUpload" class="form-label">Search tags</label>
-                                <input class="form-control" type="search" id="search-tags" multiple>
+                                <input name='tags' class="form-control" type="search" id="search-tags">
                             </div>
 
                         </div>
@@ -153,6 +158,52 @@
     <x-jquery />
 
 
-    <script></script>
+    <script>
+        $('#category').on('change', function() {
+            let option = $(this).val()
+            let _token = $('meta[name="csrf-token"]').attr('content')
+
+
+
+            $.ajax({
+                url: '/seller/get-relevant-values',
+                type: 'POST',
+
+                data: {
+                    option,
+                    _token
+                },
+                beforeSend: function() {
+                    $('.skeleton-loader').removeClass('d-none')
+                    $('.types').addClass('d-none')
+                },
+
+                success: function(response) {
+                    console.log(response)
+                    let data = ''
+                    response.forEach(function(item, index) {
+                        data += `<div class="form-check">
+                                    <input value="${item}" class="form-check-input" type="checkbox" name='category_values' id="checkbox-${index}">
+                                    <label class="form-check-label" for="checkbox-${item}">${item}</label>
+                                </div>`
+                    })
+                    $('.types').removeClass('d-none')
+                    $('.types').html(data)
+                    $('.skeleton-loader').addClass('d-none')
+
+
+
+                },
+                error: function(xhr) {
+                    console.log(xhr)
+                }
+            })
+
+
+
+
+
+        })
+    </script>
 
 </x-layout>
