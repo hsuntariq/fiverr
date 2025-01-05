@@ -35,21 +35,44 @@ class GigController extends Controller
 
         $formFields = $req->validate([
             "title" => ['', 'min:6'],
-            "category" => '',
-            'category_values' => '',
-            'desc' => '',
-            'faq' => '',
-            'base_package' => '',
-            'standard_package' => '',
-            'premium_package' => '',
-            'images' => ['', 'mimes:jpg,jpeg,webp,png'],
-            'tags' => [''],
+            "category" => 'required',
+            'category_values' => 'required',
+            'desc' => 'required',
+            'faq' => 'required',
+            'base_package' => 'required',
+            'standard_package' => 'required',
+            'premium_package' => 'required',
+            'images' => ['required', 'mimes:jpg,jpeg,webp,png'],
+            'tags' => ['required'],
         ]);
 
 
-        // Gig::create($formFields);
-        echo "<pre>";
-        print_r($req->input('category_values'));
-        echo "</pre>";
+        $formFields['images'] = $req->file('images')->store('gig_image', 'public');
+
+
+        $formFields['category_values'] = implode(',', $formFields['category_values']);
+
+        Gig::create($formFields);
+
+
+
+
+
+        return response()->json([
+            "status" => 'success',
+            "message" => 'Added Successfully'
+        ]);
+
+        // return back()->with('message', 'Gig created successfully!');
+    }
+
+
+
+
+    public function getGigs()
+    {
+        $gigs = Gig::all();
+
+        return view('welcome', compact('gigs'));
     }
 }

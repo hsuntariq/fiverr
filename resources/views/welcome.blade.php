@@ -58,7 +58,47 @@
             <li class=" font-bold text-secondary relevent-li cursor-pointer ">AI</li>
         </ul>
         <hr class="m-0">
+
+        <div class="row p-3">
+            @foreach ($gigs as $item)
+                <div class="col-lg-3 col-md-4 col-sm-6 my-2">
+
+                    <div class="card shadow rounded-3 border-0">
+                        <img class="rounded-3 rounded-bottom-0" width="100%" height="200px" class="object-cover"
+                            src="https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/107637374/original/f8a5fea1e7a43f8e5cf8080207849bc1d6aa806a.jpg"
+                            alt="">
+                        <div class="py-4 px-2">
+
+                            <div class="d-flex gap-2 align-items-center">
+                                <div class="img user-image">
+                                    <img src="https://plus.unsplash.com/premium_photo-1683121366070-5ceb7e007a97?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D"
+                                        width="20px" class="rounded-circle border border-success  object-fit-contain"
+                                        height="20px" alt="user image">
+                                </div>
+                                <h6 class="username m-0 text-capitalize">username</h6>
+                            </div>
+                            <p class="text-secondary-emphasis fw-semibold my-2">
+                                Lorem ipsum dolor sit amet consectetur.
+                            </p>
+                            <div class="d-flex">
+                                ⭐ <span class="fw-bolder">5.0</span> <span class="text-secondary">
+                                    (24)
+                                </span>
+                            </div>
+                            <h6>From $135</h6>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+
+
+        </div>
+
+
+
     </div>
+
+
 
 
 
