@@ -1,4 +1,4 @@
-<div
+{{-- <div
     class="underlay d-block d-lg-none z-3 translate-nx-100  transition-fast black-50 w-100 position-fixed top-0 height-full ">
     <div class="sidebar translate-nx-100 transition-fast p-3 height-full col-md-4 col-sm-4 bg-white y-scroll">
         <i class="bi bi-x-lg position-absolute close-sidebar cursor-pointer" style="right: 10px;top:10px">
@@ -78,4 +78,4 @@
             </li>
         </ul>
     </div>
-</div>
+</div> --}}

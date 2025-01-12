@@ -75,4 +75,11 @@ class GigController extends Controller
 
         return view('welcome', compact('gigs'));
     }
+
+
+    public function getSingleGig($id)
+    {
+        $findGig = Gig::find($id);
+        return response()->json($findGig);
+    }
 }

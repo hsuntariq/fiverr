@@ -63,10 +63,10 @@
             @foreach ($gigs as $item)
                 <div class="col-lg-3 col-md-4 col-sm-6 my-2">
 
-                    <div class="card shadow rounded-3 border-0">
-                        <img class="rounded-3 rounded-bottom-0" width="100%" height="200px" class="object-cover"
-                            src="https://fiverr-res.cloudinary.com/t_gig_cards_web,q_auto,f_auto/gigs/107637374/original/f8a5fea1e7a43f8e5cf8080207849bc1d6aa806a.jpg"
-                            alt="">
+                    <a href="/seller/single-gig/{{ $item->id }}"
+                        class="card text-decoration-none shadow-lg rounded-3 border-0">
+                        <img class="rounded-3 rounded-bottom-0" width="100%" height="200px" class=""
+                            style="object-fit: cover" src="{{ asset('/storage/' . $item->images) }}" alt="">
                         <div class="py-4 px-2">
 
                             <div class="d-flex gap-2 align-items-center">
@@ -78,7 +78,7 @@
                                 <h6 class="username m-0 text-capitalize">username</h6>
                             </div>
                             <p class="text-secondary-emphasis fw-semibold my-2">
-                                Lorem ipsum dolor sit amet consectetur.
+                                {{ $item->desc }}
                             </p>
                             <div class="d-flex">
                                 ⭐ <span class="fw-bolder">5.0</span> <span class="text-secondary">
@@ -87,7 +87,7 @@
                             </div>
                             <h6>From $135</h6>
                         </div>
-                    </div>
+                    </a>
                 </div>
             @endforeach
 
