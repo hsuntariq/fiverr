@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('gigs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('title');
             $table->unsignedBigInteger('category');
             $table->string('category_values');
@@ -23,7 +24,7 @@ return new class extends Migration
             $table->integer('premium_package');
             $table->string('images');
             $table->string('tags');
-
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('category')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
 
 

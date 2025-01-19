@@ -1,7 +1,10 @@
 <x-layout>
     <x-nav />
     <hr>
+    <x-popup />
     @include('seller.partials.skeleton')
+    @include('seller.partials.continue-menu')
+
     <div class="container mt-5 gig-content d-none">
         <div class="row">
             <!-- Image Section -->
@@ -16,7 +19,7 @@
                     <img src="path-to-seller-image.jpg" alt="Seller" class="rounded-circle me-2" width="50"
                         height="50">
                     <div>
-                        <strong>Malik Z</strong>
+                        <strong class="username"></strong>
                         <div class="rating-stars">
                             &#9733;&#9733;&#9733;&#9733;&#9733; <span class="text-muted">(168 reviews)</span>
                         </div>
@@ -50,7 +53,7 @@
                             <li>1 Panel</li>
                         </ul>
                         <h3 class="text-success price"></h3>
-                        <button class="btn btn-primary w-100 mb-2">Continue</button>
+                        <button class="btn btn-primary order-btn w-100 mb-2">Continue</button>
                         <button class="btn btn-outline-secondary w-100">Contact me</button>
                     </div>
                 </div>
@@ -71,6 +74,9 @@
 
 
     <script>
+        let package_name
+        let package_price;
+        let newPrice;
         $(document).ready(function() {
             $('.gig-content').addClass('d-none')
             $('.gig-skeleton').removeClass('d-none')
@@ -82,6 +88,10 @@
                 data: {},
                 success: function(response) {
                     console.log(response)
+                    $('.username').html(response?.user?.name)
+                    $('.order-to').val(response?.user?.id)
+                    $('.services').val(response?.title)
+                    $('.seller_name').val(response?.user?.name)
                     $('.title').html(response?.title)
                     $('.gig-image').attr('src', `/storage/${response?.images}`)
                     $('.price').html(`$${response.base_package}`)
@@ -93,12 +103,27 @@
                             'bg-light text-secondary');
                         $('.package').eq(0).addClass('bg-white text-dark');
                     });
+                    package_name = 'basic'
+                    package_price = response?.base_package
+                    $('.package').val(package_name)
+
+                    $('.price-input').val(package_price)
 
                     $('.standard').on('click', function() {
                         $('.price').html(`$${response.standard_package}`);
                         $('.package').removeClass('bg-white text-dark').addClass(
                             'bg-light text-secondary');
                         $('.package').eq(1).addClass('bg-white text-dark');
+                        package_name = 'standard'
+                        package_price = response?.standard_package
+                        $('.price-input').val(package_price)
+                        $('.package').val(package_name)
+
+                    });
+                    $('.basic').on('click', function() {
+
+                        package_name = 'basic'
+                        package_price = response?.base_package
                     });
 
                     $('.premium').on('click', function() {
@@ -106,6 +131,11 @@
                         $('.package').removeClass('bg-white text-dark').addClass(
                             'bg-light text-secondary');
                         $('.package').eq(2).addClass('bg-white text-dark');
+                        package_name = 'premium'
+                        package_price = response?.premium_package
+                        $('.price-input').val(package_price)
+                        $('.package').val(package_name)
+
                     });
 
 
@@ -119,6 +149,62 @@
                 }
             })
 
+
+
+        })
+
+        $('.order-btn').on('click', function() {
+            $('.underlay-order').css('visibility', 'visible')
+            $('.order-sidebar').css('transform', 'translateX(0)')
+            $('.package_name').html(package_name)
+            $('.package_price').html(package_price)
+            console.log(package_name, package_price)
+        })
+        $('.underlay-order').on('click', function() {
+            $('.underlay-order').css('visibility', 'hidden')
+            $('.order-sidebar').css('transform', 'translateX(100%)')
+        })
+        $('.btn-close').on('click', function() {
+            $('.underlay-order').css('visibility', 'hidden')
+            $('.order-sidebar').css('transform', 'translateX(100%)')
+        })
+        $('.order-sidebar').on('click', function(e) {
+            e.stopPropagation()
+        })
+
+
+
+        // quantity
+        let val = 1
+        $('.quantity').html(val)
+        $('.quantity-input').val(val)
+        $('.btn-dec').on('click', function() {
+            val--;
+            if (val < 1) {
+                val = 1
+            }
+            $('.quantity').html(val)
+            $('.quantity-input').val(val)
+
+            newPrice = package_price * val
+
+            $('.package_price').html(newPrice)
+            $('.price-input').val(newPrice)
+
+
+        })
+        $('.btn-inc').on('click', function() {
+            val++;
+            if (val > 20) {
+                val = 20
+            }
+            $('.quantity').html(val)
+            $('.quantity-input').val(val)
+
+            newPrice = package_price * val
+
+            $('.package_price').html(newPrice)
+            $('.price-input').val(newPrice)
 
 
         })

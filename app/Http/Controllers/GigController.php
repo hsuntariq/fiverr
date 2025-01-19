@@ -52,6 +52,9 @@ class GigController extends Controller
 
         $formFields['category_values'] = implode(',', $formFields['category_values']);
 
+        $formFields['user_id'] = auth()->user()->id;
+
+
         Gig::create($formFields);
 
 
@@ -79,7 +82,7 @@ class GigController extends Controller
 
     public function getSingleGig($id)
     {
-        $findGig = Gig::find($id);
+        $findGig = Gig::with('user')->find($id);
         return response()->json($findGig);
     }
 }
